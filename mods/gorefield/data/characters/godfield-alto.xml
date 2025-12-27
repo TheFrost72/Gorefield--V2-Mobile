@@ -1,0 +1,9 @@
+<!DOCTYPE codename-engine-character>
+<character color="#346756" sprite="GODFIELD_ALTO" x="-450" isGF="false" y="-780" camx="-150" icon="GODFIELD_TRUE_FORM" camy="380" scale="3" isPlayer="false" noLosingIcon="true" animatedIcon="true" iconoffsetx="10" iconoffsety="-35">
+	<anim x="0" loop="false" y="0" fps="24" anim="GODFIELD IDLE" name="idle"/>
+	<anim x="-70" loop="false" y="-50" fps="24" anim="GODFIELD LEFT" name="singLEFT"/>
+	<anim x="-108" loop="false" y="81.5" fps="24" anim="GODFIELD DOWN" name="singDOWN"/>
+	<anim x="-68" loop="false" y="39" fps="24" anim="GODFIELD UP" name="singUP"/>
+	<anim x="-8" loop="false" y="23" fps="24" anim="GODFIELD RIGHT" name="singRIGHT"/>
+	<anim x="1" loop="false" y="-3" fps="24" anim="GODFIELD TRANS" name="transition"/>
+</character>
