@@ -928,7 +928,7 @@ class PlayState extends MusicBeatState
 	}
 
 	@:dox(hide) public override function createPost() {
-		startCutscene("", cutscene, null, true);
+		startCutscene("", null, null, true);
 		super.createPost();
 
 		updateDiscordPresence();
