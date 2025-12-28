@@ -78,6 +78,12 @@ function postCreate()
     gorefieldiconP2 = createIcon(dad);
     gorefieldiconP1 = createIcon(boyfriend);
 
+    if (isCaptive)
+    {
+        gorefieldiconP2.alpha = 0;
+        gorefieldiconP2.visible = false;
+    }
+
     add(gorefieldiconP2);
     add(gorefieldiconP1);
 
