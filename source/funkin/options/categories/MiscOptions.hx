@@ -5,7 +5,6 @@ import funkin.options.TreeMenuScreen;
 import funkin.options.type.TextOption;
 import funkin.options.type.Separator;
 import flixel.FlxG;
-import funkin.util.CoolUtil;
 
 class MiscOptions extends TreeMenuScreen {
     public function new() {
