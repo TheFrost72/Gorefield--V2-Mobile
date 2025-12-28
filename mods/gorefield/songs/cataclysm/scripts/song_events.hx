@@ -62,7 +62,7 @@ function update(elapsed:Float) {
 var changeCallback = true;
 function stepHit(step:Int) {
     if (step >= 4369){
-        if(dad.animation.callback == null && changeCallback){
+        if (dad.animation.callback == null && changeCallback){
             dad.animation.callback = function(name:String, frameNumber:Int, frameIndex:Int){
                 if(frameNumber == 0 && name != 'idle')
                     FlxG.camera.shake(0.005, .15);
@@ -131,41 +131,46 @@ function stepHit(step:Int) {
             for (strum in strumLines){
                 for (i=>strumLine in strumLines.members){
                     switch (i){
-                        case 0:
+                        case 0: {
                             for (strumNote in strumLine.members)
                                 FlxTween.tween(strumNote, {alpha: 0}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.quadOut});
+                        }
                     }
-                } 
+                }
             }
         case 912:
             for (strum in strumLines){
                 for (i=>strumLine in strumLines.members){
                     switch (i){
-                        case 0:
+                        case 0: {
                             for (strumNote in strumLine.members)
                                 FlxTween.tween(strumNote, {alpha: 1}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.quadOut});
-                        case 1:
+                        }
+                        case 1: {
                             for (strumNote in strumLine.members)
                                 FlxTween.tween(strumNote, {alpha: 0}, (Conductor.stepCrochet / 1000) * 16, {ease: FlxEase.quadInOut, startDelay: (Conductor.stepCrochet / 1000) * 16});
+                        }
                     }
-                } 
+                }
             }
         case 935:
             zoomDisabled = true;
             FlxTween.tween(FlxG.camera,{zoom: 0.7}, (Conductor.stepCrochet / 1000) * 120, {ease: FlxEase.quadIn});
 
-            for (sprite in [stage.stageSprites["BG"],stage.stageSprites["BG2"],stage.stageSprites["ALO"],stage.stageSprites["ALO2"]])
+            for (sprite in [stage.stageSprites["BG"],stage.stageSprites["BG2"],stage.stageSprites["ALO"],stage.stageSprites["ALO2"]]) {
                 FlxTween.tween(sprite,{alpha: 0.15}, (Conductor.stepCrochet / 1000) * 120, {ease: FlxEase.quadInOut});
+            }
         case 1052:
             zoomDisabled = false;
             for (strum in strumLines){
                 for (i=>strumLine in strumLines.members){
                     switch (i){
-                        case 1:
+                        case 1: {
                             for (strumNote in strumLine.members)
                                 FlxTween.tween(strumNote, {alpha: 1}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.quadInOut});
+                        }
                     }
-                } 
+                }
             }
             FlxTween.tween(camHUD, {alpha: 0}, 0.4);
         case 1059:
@@ -176,12 +181,13 @@ function stepHit(step:Int) {
                 dad.afterTrailCache();
                 jonTrail.members[0].x += FlxG.random.float(-1, 4);
                 jonTrail.members[0].y += FlxG.random.float(-1, 4);
-            }
+            };
             jonTrail.color = 0xFFB3B1D8;
             if (FlxG.save.data.trails) insert(members.indexOf(dad), jonTrail);
         case 1062:
-            for (sprite in [stage.stageSprites["BG"],stage.stageSprites["BG2"],stage.stageSprites["ALO"],stage.stageSprites["ALO2"]])
+            for (sprite in [stage.stageSprites["BG"],stage.stageSprites["BG2"],stage.stageSprites["ALO"],stage.stageSprites["ALO2"]]) {
                 FlxTween.tween(sprite,{alpha: 1}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.quadIn, startDelay: (Conductor.stepCrochet / 1000) * 2});
+            }
 
             FlxTween.tween(camHUD, {alpha: 1}, (Conductor.stepCrochet / 1000) * 8);
         case 1070:
@@ -207,8 +213,9 @@ function stepHit(step:Int) {
             stage.stageSprites["BG"].visible = stage.stageSprites["BG2"].visible = stage.stageSprites["ALO"].visible = stage.stageSprites["ALO2"].visible = false;
             stage.stageSprites["PUNISH_BG1"].alpha = stage.stageSprites["PUNISH_TV"].alpha = 1;
 
-            if (note_sprite != null && (FlxG.save.data.paintPosition == 8 || FlxG.save.data.paintPosition == 8))
+            if (note_sprite != null && (FlxG.save.data.paintPosition == 8 || FlxG.save.data.paintPosition == 8)) {
                 note_sprite.active = note_sprite.visible = true;
+            }
 
             snapCam();
 
@@ -233,10 +240,12 @@ function stepHit(step:Int) {
             strumLineDadZoom = -1;
             defaultCamZoom = 0.7;
 
-            if (note_sprite != null && (FlxG.save.data.paintPosition == 7 || FlxG.save.data.paintPosition == 8))
+            if (note_sprite != null && (FlxG.save.data.paintPosition == 7 || FlxG.save.data.paintPosition == 8)) {
                 note_sprite.active = note_sprite.visible = false;
-            if (note_sprite != null && (FlxG.save.data.paintPosition == 9 || FlxG.save.data.paintPosition == 10))
+            }
+            if (note_sprite != null && (FlxG.save.data.paintPosition == 9 || FlxG.save.data.paintPosition == 10)) {
                 note_sprite.active = note_sprite.visible = true;
+            }
             
             snapCam();
 
@@ -258,8 +267,9 @@ function stepHit(step:Int) {
             stage.stageSprites["MARCO_BG"].alpha = stage.stageSprites["BONES_SANS"].alpha = 1;
             defaultCamZoom = 0.6;
 
-            if (note_sprite != null && (FlxG.save.data.paintPosition == 9 || FlxG.save.data.paintPosition == 10))
+            if (note_sprite != null && (FlxG.save.data.paintPosition == 9 || FlxG.save.data.paintPosition == 10)) {
                 note_sprite.active = note_sprite.visible = false;
+            }
 
             snapCam();
 
@@ -320,12 +330,13 @@ function stepHit(step:Int) {
             FlxTween.tween(camHUD, {alpha: 1}, (Conductor.stepCrochet / 1000) * 4, {ease: FlxEase.quadIn});
             FlxTween.tween(stage.stageSprites["black"], {alpha: 0}, (Conductor.stepCrochet / 1000) * 4, {ease: FlxEase.quadIn});
         case 4312:
-            for (sprite in ["RAYO_DIVISOR", "viento"])
+            for (sprite in ["RAYO_DIVISOR", "viento"]) {
                 FlxTween.tween(stage.stageSprites[sprite], {alpha: 0}, 0.4, {
                     onComplete: function() {
                         stage.stageSprites[sprite].active = false;
                     }
                 });
+            }
 
             FlxTween.tween(dad, {y: dad.y + 600}, 0.7, {startDelay: 0.2});
             FlxTween.tween(boyfriend, {y: boyfriend.y + 240}, 0.7, {startDelay: 0.2});
@@ -339,58 +350,69 @@ function stepHit(step:Int) {
             FlxG.camera.zoom = defaultCamZoom = 0.85;
             boyfriend.playAnim("idle", true, "DANCE");
         case 4868:
-            for (strum in strumLines)
+            for (strum in strumLines){
                 for (i=>strumLine in strumLines.members){
                     switch (i){
-                        case 4:
+                        case 4: {
                             for (char in strumLine.characters)
                                 char.alpha = 1;
+                        }
                     }
                 }
+            }
         case 4872:
-            for (strum in strumLines)
+            for (strum in strumLines){
                 for (i=>strumLine in strumLines.members){
                     switch (i){
-                        case 5:
+                        case 5: {
                             for (char in strumLine.characters)
                                 char.alpha = 1;
+                        }
                     }
                 }
+            }
         case 4876:
-            for (strum in strumLines)
+            for (strum in strumLines){
                 for (i=>strumLine in strumLines.members){
                     switch (i){
-                        case 3:
+                        case 3: {
                             for (char in strumLine.characters)
                                 char.alpha = 1;
+                        }
                     }
                 }
+            }
         case 4880:
             targetAlpha1 = targetAlpha2 = 0;
             for (strum in strumLines){
                 for (i=>strumLine in strumLines.members){
                     switch (i){
-                        case 0:
+                        case 0: {
                             for (strumNote in strumLine.members)
                                 FlxTween.tween(strumNote, {alpha: 0}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.quadOut});
-                        case 1:
-                        if (!FlxG.save.data.middlescroll) {
-                            for (strumNote in strumLine.members)
-                                FlxTween.tween(strumNote, {x: strumNote.x - 320}, (Conductor.stepCrochet / 1000) * 12, {ease: FlxEase.quadInOut});
+                        }
+                        case 1: {
+                            if (!FlxG.save.data.middlescroll) {
+                                for (strumNote in strumLine.members)
+                                    FlxTween.tween(strumNote, {x: strumNote.x - 320}, (Conductor.stepCrochet / 1000) * 12, {ease: FlxEase.quadInOut});
+                            }
+                        }
                     }
                 }
             }
             
             camFollow.setPosition(-50, -100);
             defaultCamZoom = 1.6;
-            for (strum in strumLines)
+            for (strum in strumLines){
                 for (i=>strumLine in strumLines.members){
                     switch (i){
-                        case 2:
+                        case 2: {
                             for (char in strumLine.characters)
                                 char.alpha = 1;
+                        }
                     }
                 }
+            }
         case 5008:
             targetAlpha1 = targetAlpha2 = 0.2;
             camFollow.setPosition(-50, -320);
@@ -398,26 +420,31 @@ function stepHit(step:Int) {
             for (strum in strumLines){
                 for (i=>strumLine in strumLines.members){
                     switch (i){
-                        case 0:
+                        case 0: {
                             for (strumNote in strumLine.members)
                                 FlxTween.tween(strumNote, {alpha: 1}, (Conductor.stepCrochet / 1000) * 8, {ease: FlxEase.quadOut});
-                        case 1:
-                        if (!FlxG.save.data.middlescroll) {
-                            for (strumNote in strumLine.members)
-                                FlxTween.tween(strumNote, {x: strumNote.x + 320}, (Conductor.stepCrochet / 1000) * 12, {ease: FlxEase.quadInOut});
+                        }
+                        case 1: {
+                            if (!FlxG.save.data.middlescroll) {
+                                for (strumNote in strumLine.members)
+                                    FlxTween.tween(strumNote, {x: strumNote.x + 320}, (Conductor.stepCrochet / 1000) * 12, {ease: FlxEase.quadInOut});
+                            }
+                        }
                     }
-                } 
+                }
             }
-            for (strum in strumLines)
+            for (strum in strumLines){
                 for (i=>strumLine in strumLines.members){
                     switch (i){
-                        case 3 | 2 | 4 | 5:
+                        case 3 | 2 | 4 | 5: {
                             for (char in strumLine.characters)
                                 FlxTween.tween(char, {y: char.y - 1000, x: char.x - ((i == 4 || i == 5) ? 300 : -300)}, (Conductor.stepCrochet / 1000) * 24, {ease: FlxEase.quadInOut, startDelay: 0.08 * i});
+                        }
                     }
-                } 
+                }
+            }
         case 5070:
-            FlxTween.tween(camHUD, {alpha: 0}, (Conductor.stepCrochet / 1000) * 16);  
+            FlxTween.tween(camHUD, {alpha: 0}, (Conductor.stepCrochet / 1000) * 16);
         case 5128:
             camFollow.setPosition(-50, -70);
             defaultCamZoom = 1.5;
