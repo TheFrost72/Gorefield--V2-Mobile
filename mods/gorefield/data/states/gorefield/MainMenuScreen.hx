@@ -6,7 +6,6 @@ import funkin.editors.EditorPicker;
 import funkin.backend.utils.DiscordUtil;
 import funkin.backend.MusicBeatState;
 
-// Menu options
 var options:Array<String> = [
 	'story_mode',
 	'freeplay',
@@ -43,7 +42,7 @@ var glowShader:CustomShader;
 var glitchShader:CustomShader;
 var heatWaveShader:CustomShader;
 
-// PROMPT
+//PROMPT
 var boxSprite:FlxSprite;
 var isInProgPrompt:Bool = false;
 var yesText:Alphabet;
@@ -67,12 +66,21 @@ function create() {
 	gorefield.frames = Paths.getSparrowAtlas('menus/mainmenu/gorefield_menu');
 	gorefield.animation.addByPrefix('idle', 'MenuIdle0000', 1);
 	gorefield.animation.addByPrefix('beat', 'MenuIdle', 24,false);
-	gorefield.animation.addByPrefix('jeje', 'JEJE', 24);
 	gorefield.animation.play('idle');
 	gorefield.updateHitbox();
 	gorefield.x = 586; gorefield.y = 40;
 	gorefield.antialiasing = true;
 	insert(1,gorefield);
+
+	gorefield_fright = new FlxSprite();
+	gorefield_fright.frames = Paths.getSparrowAtlas('menus/mainmenu/gorefield_fright');
+	gorefield_fright.animation.addByPrefix('jeje', 'JEJE', 24);
+	gorefield_fright.updateHitbox();
+	gorefield_fright.x = 250;
+	gorefield_fright.y = 40;
+	gorefield_fright.antialiasing = true;
+	insert(1,gorefield_fright);
+	gorefield_fright.alpha = 0;
 
 	logoBl = new FlxSprite();
 	logoBl.frames = Paths.getSparrowAtlas('menus/logoMod');
@@ -192,11 +200,11 @@ function create() {
 	progInfoText.scrollFactor.set();
 	progInfoText.screenCenter(FlxAxes.X);
 	insert(99999,progInfoText);
-addTouchPad('UP_DOWN', 'A_B');
+
+	// Mobile
+	addTouchPad("UP_DOWN", "A_B");
 }
 
-// This function checks saved week progress and opens prompt when needed.
-// Kept above update/goToItem to avoid forward-declaration issues.
 function checkWeekProgress() {
 	if(weekProgress != null){
 		if (weekProgress.exists("Principal Week...")){
@@ -225,7 +233,6 @@ public var finishedCallback:Void->Void;
 public var acceptedCallback:Void->Void;
 var cancelCallback:Void->Void;
 function openProgressPrompt(entered:Bool, ?finishCallback, ?accepted, ?cancel){
-	// Slide the prompt box and set callbacks
 	isInProgPrompt = entered;
 	FlxTween.cancelTweensOf(boxSprite);
 	FlxTween.tween(boxSprite, {y: entered ? 150 : 730}, entered ? 0.7 : 0.4, {ease: FlxEase.cubeOut});
@@ -234,17 +241,6 @@ function openProgressPrompt(entered:Bool, ?finishCallback, ?accepted, ?cancel){
 	acceptedCallback = entered ? accepted : null;
 	if (cancel != null)
 		cancelCallback = cancel;
-
-	if (entered)
-	{
-	  removeTouchPad();
-	  addTouchPad("LEFT_RIGHT", "A_B");
-	}
-	else
-	{
-	  removeTouchPad();
-	  addTouchPad("UP_DOWN", "A_B");
-	}
 }
 
 function handleProgressPrompt(){
@@ -257,6 +253,7 @@ function handleProgressPrompt(){
 	noText.alpha = alphas[1 - confirmInt];
 	noText.scale.set(scales[1 - confirmInt], scales[1 - confirmInt]);
 }
+
 
 /*function loadCheckpoint(point) {
 	if(point == null) {
@@ -311,24 +308,7 @@ function changeItem(change:Int = 0) {
 	}
 }
 
-// Helper to reliably play the 'jeje' animation and ensure visual setup.
-// Uses a tiny delay so any cutscene reinserts/visibility changes settle.
-function playGorefieldJeje() {
-	// Ensure visible and position/offset/color are set before animation
-	gorefield.visible = true;
-	// Reset position and offsets to intended values
-	gorefield.x = 250;
-	gorefield.offset.y = 15;
-	gorefield.offset.x = -25;
-	gorefield.color = 0xFFDE8888;
-
-	// Small delay to allow any insertion/visibility/cutscene changes to finish
-	new FlxTimer().start(0.05, function(tmr:FlxTimer) {
-		// Play from start and loop flag as in original intent
-		gorefield.animation.play('jeje');
-	});
-}
-
+var isPlayingFromPreviousWeek:Bool = false;
 function goToItem() {
 	selectedSomthin = true;
 
@@ -336,11 +316,13 @@ function goToItem() {
 	switch (options[curSelected]) {
 		case "story_mode": 
 			FlxG.sound.play(Paths.sound('menu/pressStorymode'));
+			gorefield.alpha = 0;
+			gorefield_fright.alpha = 1;
+			gorefield_fright.animation.play("jeje");
+			gorefield_fright.offset.y = 15;
+			gorefield_fright.offset.x = -25;
+			gorefield_fright.color = 0xFFDE8888;
 
-			// Use helper to reliably set up and play gorefield 'jeje' animation
-			playGorefieldJeje();
-
-			// Visual/camera/audio effects for story mode
 			FlxG.sound.music.stop();
 			FlxG.camera.shake(0.005, 5.2);
 
@@ -356,7 +338,7 @@ function goToItem() {
 			if (FlxG.save.data.bloom) FlxG.camera.addShader(glowShader);
 
 			for (member in members)
-				if (Std.isOfType(member, FlxBasic)) member.visible = member == fire || member == gorefield || member == vigentte;
+				if (Std.isOfType(member, FlxBasic)) member.visible = member == fire || member == gorefield || member == gorefield_fright|| member == vigentte;
 
 			MusicBeatState.skipTransIn = MusicBeatState.skipTransOut = true;
 			(new FlxTimer()).start(2, function() {
@@ -424,9 +406,6 @@ function update(elapsed:Float) {
 	glitchShader.time = tottalTime;
 
 	fire.y = -50 + (FlxMath.fastSin(tottalTime) * 10);
-	if (gorefield.animation.name == "jeje") {
-		gorefield.offset.y = 15 + FlxG.random.float(-6,6); gorefield.offset.x = -25 + FlxG.random.float(-2,2);
-	}
 
 	if (FlxG.sound.music != null)
 		Conductor.songPosition = FlxG.sound.music.time;
