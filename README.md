@@ -41,7 +41,7 @@ Little note, gorefield builds on gamebanna/gamejolt come with a exe built in!!
 
 # Mobile Engine Credits:
 
-• Credits to Homura for porting the engine
-• Credits to Karim Akra for helping on the port
-• Credits to SantiYea for bringing back the source
-• Credits to TheFrost72 for porting the mod
+- Credits to Homura for porting the engine
+- Credits to Karim Akra for helping on the port
+- Credits to SantiYea for bringing back the source
+- Credits to TheFrost72 for porting the mod
