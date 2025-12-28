@@ -1,30 +1,24 @@
 package funkin.options.categories;
 
 import funkin.savedata.FunkinSave;
+import funkin.options.TreeMenuScreen;
+import funkin.options.type.TextOption;
+import funkin.options.type.Separator;
+import flixel.FlxG;
+import funkin.util.CoolUtil;
 
 class MiscOptions extends TreeMenuScreen {
-	public function new() {
-		super('optionsTree.miscellaneous-name', 'optionsTree.miscellaneous-desc', 'MiscOptions.', ['UP_DOWN', 'A_B']);
+    public function new() {
+        // Keep the Miscellaneous tab visible
+        super('optionsTree.miscellaneous-name', 'optionsTree.miscellaneous-desc', 'MiscOptions.', ['UP_DOWN', 'A_B']);
 
-		add(new Checkbox(getNameID('devMode'), getDescID('devMode'), 'devMode'));
-		add(new Checkbox(getNameID('allowConfigWarning'), getDescID('allowConfigWarning'), 'allowConfigWarning'));
-		#if UPDATE_CHECKING
-		add(new Checkbox(getNameID('betaUpdates'), getDescID('betaUpdates'), 'betaUpdates'));
-		add(new TextOption(getNameID('checkForUpdates'), getDescID('checkForUpdates'), () -> {
-			var report = funkin.backend.system.updating.UpdateUtil.checkForUpdates(true);
-			if (report.newUpdate) FlxG.switchState(new funkin.backend.system.updating.UpdateAvailableScreen(report));
-			else {
-				CoolUtil.playMenuSFX(CANCEL);
-				//updateDescText(translate('checkForUpdates-noUpdateFound'));
-			}
-		}));
-		#end
+        // Only keep the Reset Save Data option
+        add(new Separator());
 
-		add(new Separator());
-		add(new TextOption(getNameID('resetSaveData'), getDescID('resetSaveData'), () -> {
-			FunkinSave.save.erase();
-			FunkinSave.highscores.clear();
-			FunkinSave.flush();
-		}));
-	}
+        add(new TextOption(getNameID('resetSaveData'), getDescID('resetSaveData'), () -> {
+            FunkinSave.save.erase();
+            FunkinSave.highscores.clear();
+            FunkinSave.flush();
+        }));
+    }
 }
