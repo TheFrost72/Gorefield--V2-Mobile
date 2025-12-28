@@ -96,7 +96,7 @@ function create() {
 	menuInfomation.setFormat("fonts/pixelart.ttf", 28, FlxColor.WHITE, "center");
 	menuInfomation.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 5, 50);
 	menuInfomation.borderSize = 2;
-	insert(3,menuInfomation);
+	insert(9999,menuInfomation);
 
 	menuItems = new FlxTypedGroup();
 	insert(1,menuItems);
