@@ -17,7 +17,7 @@ function update(elapsed:Float) {
                 // Developer Mode
                 case "optionsTree.miscellaneous-name":
                     var devCheckbox:Checkbox = new Checkbox(
-                        "Developer Mode 2",
+                        "Developer Mode",
                         "Enables debug_tools.hx, allows for speeding up/slowing down the game.\n" +
                         "PRESS 1 - Skip Song\n" +
                         "PRESS 2 - Slows Game By 10% (Min Speed: 10%)\n" +
