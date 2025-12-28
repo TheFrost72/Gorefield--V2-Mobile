@@ -92,7 +92,7 @@ public static function losePS(psLost){
 	breakingPS -= psLost;
 
 	if(breakingPS < 1){
-		health -= 99999999;
+		gameOver();
 		return;
 	}
 	else{
