@@ -1,40 +1,22 @@
-import sys.FileSystem; 
-import funkin.options.type.TextOption; 
-import funkin.options.type.Checkbox; 
-import funkin.options.TreeMenuScreen; 
-import funkin.savedata.FunkinSave; 
-import funkin.backend.assets.ModsFolder; 
-import funkin.backend.utils.DiscordUtil; 
+import sys.FileSystem;
+import funkin.options.type.TextOption;
+import funkin.options.type.Checkbox;
+import funkin.options.TreeMenuScreen;
+import funkin.savedata.FunkinSave;
+import funkin.backend.assets.ModsFolder;
+import funkin.backend.utils.DiscordUtil;
 import flixel.util.FlxColor;
+import flixel.FlxG;
+import flixel.FlxSprite;
 
-function update(elapsed:Float) { 
-    for (menu in tree) { 
-        if (menu.health != -1) { 
+function update(elapsed:Float) {
+    for (menu in tree) {
+        if (menu.health != -1) {
             menu.health = -1;
 
             switch (menu.rawName)
             {
-                // Developer Mode
-                case "optionsTree.miscellaneous-name":
-                    var devCheckbox:Checkbox = new Checkbox(
-                        "Developer Mode",
-                        "Enables debug_tools.hx, allows for speeding up/slowing down the game.\n" +
-                        "PRESS 1 - Skip Song\n" +
-                        "PRESS 2 - Slows Game By 10% (Min Speed: 10%)\n" +
-                        "PRESS 3 - Resets Game Speed To 100%\n" +
-                        "PRESS 4 - Speeds Game By 10% (Max Speed: 200%)\n" +
-                        "PRESS 5 - Hold To Speed Game By 2000%, Uses BOTPLAY\n" +
-                        "PRESS 6 - Toggle For Botplay On Player Strums",
-                        "dev",
-                        null,
-                        FlxG.save.data
-                    );
-                    devCheckbox.color = 0xFFD3D3D3;
-                    menu.insert(1, devCheckbox);
-
-                // Gameplay  
                 case "optionsTree.gameplay-name":
-                    // Remove the 12th option after the menu is fully built
                     FlxG.signals.postUpdate.add(() ->
                     {
                         for (m in tree)
@@ -123,7 +105,22 @@ function update(elapsed:Float) {
                     );
                     menu.insert(3, hardModeOption);
 
-                // Appearance  
+                    var devCheckbox:Checkbox = new Checkbox(
+                        "Developer Mode",
+                        "Enables debug_tools.hx, allows for speeding up/slowing down the game.\n" +
+                        "PRESS 1 - Skip Song\n" +
+                        "PRESS 2 - Slows Game By 10% (Min Speed: 10%)\n" +
+                        "PRESS 3 - Resets Game Speed To 100%\n" +
+                        "PRESS 4 - Speeds Game By 10% (Max Speed: 200%)\n" +
+                        "PRESS 5 - Hold To Speed Game By 2000%, Uses BOTPLAY\n" +
+                        "PRESS 6 - Toggle For Botplay On Player Strums",
+                        "dev",
+                        null,
+                        FlxG.save.data
+                    );
+                    devCheckbox.color = 0xFFD3D3D3;
+                    menu.add(devCheckbox);
+
                 case "optionsTree.appearance-name":
                     for (member in menu.members.copy())
                     {
@@ -154,7 +151,6 @@ function update(elapsed:Float) {
                     menu.insert(1, trailsCheckbox);
                     menu.insert(2, flashingCheckbox);
 
-                // Advanced  
                 case "optionsMenu.advanced":
                     if (menu.members.length > 3)
                     {
