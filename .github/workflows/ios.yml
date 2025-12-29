@@ -41,7 +41,6 @@ jobs:
       - name: Rebuild hxcpp for iOS
         run: |
           haxelib install hxcpp
-          haxelib run hxcpp rebuild
           haxelib run lime rebuild hxcpp ios
 
       - name: Build iOS (unsigned)
