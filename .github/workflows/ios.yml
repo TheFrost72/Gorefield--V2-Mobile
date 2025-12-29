@@ -7,7 +7,7 @@ on:
 
 env:
   HAXE_VERSION: 4.3.7
-  PROJECT_NAME: Gorefield V2
+  PROJECT_NAME: Gorefield-V2   # sem espaços
 
 jobs:
   build:
@@ -26,15 +26,15 @@ jobs:
 
       - name: Setup haxelib directory
         run: |
-          mkdir -p ~/haxelib
-          haxelib setup ~/haxelib
+          mkdir -p $HOME/haxelib
+          haxelib setup $HOME/haxelib
 
       - name: Restore build cache
         uses: actions/cache@v4
         with:
           key: ios-haxe-cache
           path: |
-            ~/haxelib
+            $HOME/haxelib
             export/release/ios/${{ env.PROJECT_NAME }}/haxe
 
       - name: Install project libraries
@@ -45,15 +45,53 @@ jobs:
         run: |
           haxelib run lime build ios -eval -nosign -final
 
-      - name: Create IPA
+      - name: Create IPA (robust)
         run: |
+          BUILD_DIR="export/release/ios/build/Release-iphoneos"
+          echo "Looking for .app in $BUILD_DIR"
+          if [ ! -d "$BUILD_DIR" ]; then
+            echo "ERROR: build directory does not exist: $BUILD_DIR"
+            ls -la export/release/ios/build || true
+            exit 1
+          fi
+
+          APP_BUNDLE=$(find "$BUILD_DIR" -maxdepth 1 -type d -name "*.app" -print -quit)
+          if [ -z "$APP_BUNDLE" ]; then
+            echo "ERROR: no .app found in $BUILD_DIR"
+            ls -la "$BUILD_DIR"
+            exit 1
+          fi
+
+          echo "Found app bundle: $APP_BUNDLE"
+          APP_NAME=$(basename "$APP_BUNDLE" .app)
+          echo "App name: $APP_NAME"
+
+          ENT_PATH1="export/release/ios/${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.entitlements"
+          ENT_PATH2="export/release/ios/${{ env.PROJECT_NAME }}.entitlements"
+          ENT=""
+          if [ -f "$ENT_PATH1" ]; then
+            ENT="$ENT_PATH1"
+          elif [ -f "$ENT_PATH2" ]; then
+            ENT="$ENT_PATH2"
+          else
+            echo "Warning: entitlements file not found, proceeding without entitlements"
+          fi
+
           brew install ldid
-          cd export/release/ios/build/Release-iphoneos/${{ env.PROJECT_NAME }}.app
-          ldid -S../../../${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.entitlements ${{ env.PROJECT_NAME }}
-          cd ..
-          mkdir Payload
-          mv ${{ env.PROJECT_NAME }}.app Payload
-          zip -r ${{ env.PROJECT_NAME }}.ipa Payload
+
+          if [ -n "$ENT" ]; then
+            echo "Using entitlements file: $ENT"
+            ldid -S"$ENT" "$APP_BUNDLE/$APP_NAME"
+          else
+            echo "No entitlements found; running ldid without entitlements"
+            ldid "$APP_BUNDLE/$APP_NAME" || echo "ldid without entitlements failed or is non-fatal"
+          fi
+
+          cd "$BUILD_DIR"
+          mkdir -p Payload
+          mv "$APP_NAME.app" Payload/
+          zip -r "$APP_NAME.ipa" Payload
+          echo "IPA created: $BUILD_DIR/$APP_NAME.ipa"
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
@@ -66,5 +104,5 @@ jobs:
         with:
           key: ios-haxe-cache
           path: |
-            ~/haxelib
+            $HOME/haxelib
             export/release/ios/${{ env.PROJECT_NAME }}/haxe
