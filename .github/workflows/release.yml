@@ -16,20 +16,20 @@ jobs:
       - name: Download Android Build
         uses: actions/download-artifact@main
         with:
-          name: Codename Engine Android
+          name: Gorefield-V2 Android
           path: ${{ github.workspace }}
 
       - name: Move Android File
-        run: mv "${{ github.workspace }}/CodenameEngine-release.apk" "${{ github.workspace }}/Gorefield V2-Android.apk"
+        run: mv "${{ github.workspace }}/Gorefield V2-release.apk" "${{ github.workspace }}/Gorefield V2-Android.apk"
 
       - name: Download iOS Build
         uses: actions/download-artifact@main
         with:
-          name: Codename Engine iOS
+          name: Gorefield V2 iOS
           path: ${{ github.workspace }}
 
       - name: Move iOS File
-        run: mv "${{ github.workspace }}/CodenameEngine.ipa" "${{ github.workspace }}/Gorefield V2-iOS.ipa"
+        run: mv "${{ github.workspace }}/Gorefield V2-release.ipa" "${{ github.workspace }}/Gorefield V2-release.ipa"
 
       - name: Publish The Release
         uses: softprops/action-gh-release@v2
