@@ -4,12 +4,13 @@
 
 This is a port of the Friday Night Funkin' Gorefield V2 for mobile devices. A lot is heavily inspired by LumpyTouch's animations!
 
-HAPPY 2ND ANNIVERSARY FROM GOREFIELD MOD – MOBILE PORT!
+HAPPY 3ND ANNIVERSARY FROM GOREFIELD V2 MOD – MOBILE PORT OUT NOW!
 
 ![logo](logo.png)
 
 The lasagna is ready… now on your mobile!
-After 2 long years, the story of Jon and Bf vs. Gorefield continues, with better quality and content. This fan-made mobile port brings the full experience of Gorefield V2 to smartphones, optimized for mobile performance. An adventure full of terrors and enigmas awaits you, now playable on the go!
+
+After 2 long years, the story of Jon and BF vs. Gorefield continues, with better quality and content. This mobile port brings the full experience of Gorefield V2. An adventure full of terrors and enigmas awaits you, now playable on the go!
 
 # STUFF IN MOD
 - Multiple creepy versions of Gorefield
@@ -21,7 +22,7 @@ After 2 long years, the story of Jon and Bf vs. Gorefield continues, with better
 - Middle Scroll fully adapted to all songs
 
 # ENGINE???
-This mod is made on a extensible modding framework for fnf: Codename engine. This source code folder can be placed in the mods folder to be played in codename ported by HomuHomu833!
+this repository is based on the codename engine port by the homuhomu833 team, with the gorefield mod already included, resulting in a standalone build ready to install and play.
 
 ![codename logo](cne.png)
 
