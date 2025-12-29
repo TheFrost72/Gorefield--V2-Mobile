@@ -4,7 +4,7 @@
 
 This is a port of the Friday Night Funkin' Gorefield V2 for mobile devices. A lot is heavily inspired by LumpyTouch's animations!
 
-HAPPY 3ND ANNIVERSARY FROM GOREFIELD V2 MOD – MOBILE PORT OUT NOW!
+HAPPY 3ND ANNIVERSARY FROM GOREFIELD MOD – MOBILE PORT OUT NOW!
 
 ![logo](logo.png)
 
