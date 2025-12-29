@@ -1,5 +1,7 @@
 # Gorefield V2 Mobile Port!!
 
+![cover](GorefieldMobilePort.jpg)
+
 This is a port of the Friday Night Funkin' Gorefield V2 for mobile devices. A lot is heavily inspired by LumpyTouch's animations!
 
 HAPPY 2ND ANNIVERSARY FROM GOREFIELD MOD – MOBILE PORT!
