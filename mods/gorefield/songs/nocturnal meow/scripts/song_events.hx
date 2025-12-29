@@ -154,5 +154,6 @@ function stepHit(step:Int)
         case 1784:
             scaryTime = false;
             camHUD.visible = false;
+            camGame.visible = false;
     }
 }
