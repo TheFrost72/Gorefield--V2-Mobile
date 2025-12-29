@@ -4,69 +4,59 @@ on:
   push:
     branches: ['main']
   workflow_dispatch:
-  workflow_call:
+
+env:
+  HAXE_VERSION: 4.3.7
+  PROJECT_NAME: Gorefield V2
 
 jobs:
   build:
     name: iOS Build
-    permissions: write-all
     runs-on: macos-15
+    permissions: write-all
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Haxe
-        uses: krdlab/setup-haxe@v2
+        uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.3.7
+          haxe-version: ${{ env.HAXE_VERSION }}
 
-      - name: Restore build cache
+      - name: Setup haxelib
+        run: |
+          haxelib setup ~/.haxelib
+
+      - name: Restore cache
         uses: actions/cache@v4.2.3
         with:
-          key: cache-build-ios
+          key: cache-ios
           path: |
             .haxelib/
             ~/.hxcpp/
-            export/release/ios/Gorefield/haxe/
+            export/release/ios/${{ env.PROJECT_NAME }}/haxe/
 
-      - name: Set HXCPP compile cache
-        run: |
-          echo "HXCPP_COMPILE_CACHE=$HOME/.hxcpp" >> $GITHUB_ENV
-
-      - name: Install / update libraries
+      - name: Install libraries
         run: |
           haxe -cp commandline -D analyzer-optimize --run Main setup -s
-
-      - name: Rebuild hxcpp for iOS
-        run: |
-          haxelib install hxcpp
-          haxelib run lime rebuild hxcpp ios
 
       - name: Build iOS (unsigned)
         run: |
           haxelib run lime build ios -eval -nosign -final
 
-      - name: Create IPA
+      - name: Make IPA
         run: |
           brew install ldid
-          cd export/release/ios/build/Release-iphoneos
-          ldid -S../../../Gorefield/Gorefield.entitlements Gorefield V2.app/Gorefield
+          cd export/release/ios/build/Release-iphoneos/${{ env.PROJECT_NAME }}.app
+          ldid -S../../../${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.entitlements ${{ env.PROJECT_NAME }}
+          cd ..
           mkdir Payload
-          mv Gorefield V2.app Payload
-          zip -r Gorefield V2.ipa Payload
+          mv ${{ env.PROJECT_NAME }}.app Payload
+          zip -r ${{ env.PROJECT_NAME }}.ipa Payload
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Gorefield V2 IOS
-          path: export/release/ios/build/Release-iphoneos/Gorefield V2.ipa
-
-      - name: Update build cache
-        uses: actions/cache@v4.2.3
-        with:
-          key: cache-build-ios
-          path: |
-            .haxelib/
-            ~/.hxcpp/
-            export/release/ios/Gorefield/haxe/
+          name: Codename Engine iOS
+          path: export/release/ios/build/Release-iphoneos/${{ env.PROJECT_NAME }}.ipa
