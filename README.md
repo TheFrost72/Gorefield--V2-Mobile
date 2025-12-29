@@ -29,8 +29,7 @@ this repository is based on the codename engine port by the homuhomu833 team, wi
 Download Codename:
 - Windows - MacOS - Linux: [https://codename-engine.com/]
 - Android - IOS: [https://github.com/HomuHomu833-haxe-stuff/CodenameEngine-Mobile/]
-
-Codename's Github: [https://github.com/FNF-CNE-Devs/CodenameEngine]
+- Codename's Github: [https://github.com/FNF-CNE-Devs/CodenameEngine]
 
 Little note, gorefield builds on gamebanana and gamejolt are not mod zip files. they are standalone installs — apk for android and ipa for ios!!!
 
