@@ -1,74 +1,73 @@
 name: iOS Build
+
 on:
   push:
     branches: ['main']
   workflow_dispatch:
   workflow_call:
+
 jobs:
   build:
     name: iOS Build
     permissions: write-all
     runs-on: macos-15
+
     steps:
-      - name: Pulling the new commit
+      - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Setting up Haxe
+
+      - name: Setup Haxe
         uses: krdlab/setup-haxe@v2
         with:
           haxe-version: 4.3.7
-      - name: Restore existing build cache for faster compilation
+
+      - name: Restore build cache
         uses: actions/cache@v4.2.3
         with:
-          # not caching the bin folder to prevent asset duplication and stuff like that
           key: cache-build-ios
           path: |
             .haxelib/
-            export/release/ios/CodenameEngine/haxe/
-      - run: |
-          echo "HXCPP_COMPILE_CACHE=~/.hxcpp" >> $GITHUB_ENV
-      - name: Installing/Updating libraries
+            ~/.hxcpp/
+            export/release/ios/Gorefield/haxe/
+
+      - name: Set HXCPP compile cache
+        run: |
+          echo "HXCPP_COMPILE_CACHE=$HOME/.hxcpp" >> $GITHUB_ENV
+
+      - name: Install / update libraries
         run: |
           haxe -cp commandline -D analyzer-optimize --run Main setup -s
-      - name: Building the game
-        run: haxelib run lime build ios -eval -nosign -final
-      - name: Clearing already existing cache
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const caches = await github.rest.actions.getActionsCacheList({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            })
-            for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache-build-ios") {
-                console.log('Clearing ' + cache.key + '...')
-                await github.rest.actions.deleteActionsCacheById({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  cache_id: cache.id,
-                })
-                console.log("Cache cleared.")
-              }
-            }
-      - name: Making ipa file
+
+      - name: Rebuild hxcpp for iOS
+        run: |
+          haxelib install hxcpp
+          haxelib run hxcpp rebuild
+          haxelib run lime rebuild hxcpp ios
+
+      - name: Build iOS (unsigned)
+        run: |
+          haxelib run lime build ios -eval -nosign -final
+
+      - name: Create IPA
         run: |
           brew install ldid
-          cd export/release/ios/build/Release-iphoneos/CodenameEngine.app
-          ldid -S../../../CodenameEngine/CodenameEngine.entitlements CodenameEngine
-          cd ..
+          cd export/release/ios/build/Release-iphoneos
+          ldid -S../../../Gorefield/Gorefield.entitlements Gorefield V2.app/Gorefield
           mkdir Payload
-          mv CodenameEngine.app Payload
-          zip -r CodenameEngine.ipa Payload
-      - name: Uploading artifact (entire build)
+          mv Gorefield V2.app Payload
+          zip -r Gorefield V2.ipa Payload
+
+      - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Codename Engine iOS
-          path: export/release/ios/build/Release-iphoneos/*.ipa
-      - name: Uploading new cache
+          name: Gorefield V2 IOS
+          path: export/release/ios/build/Release-iphoneos/Gorefield V2.ipa
+
+      - name: Update build cache
         uses: actions/cache@v4.2.3
         with:
-          # caching again since for some reason it doesnt work with the first post cache shit
           key: cache-build-ios
           path: |
             .haxelib/
-            export/release/ios/CodenameEngine/haxe/
+            ~/.hxcpp/
+            export/release/ios/Gorefield/haxe/
