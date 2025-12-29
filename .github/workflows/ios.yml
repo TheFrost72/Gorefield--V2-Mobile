@@ -11,7 +11,7 @@ env:
 
 jobs:
   build:
-    name: iOS Build
+    name: Build iOS
     runs-on: macos-15
     permissions: write-all
 
@@ -20,32 +20,32 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Haxe
-        uses: krdlab/setup-haxe@master
+        uses: krdlab/setup-haxe@v2
         with:
           haxe-version: ${{ env.HAXE_VERSION }}
 
-      - name: Setup haxelib
+      - name: Setup haxelib directory
         run: |
-          haxelib setup ~/.haxelib
+          mkdir -p ~/haxelib
+          haxelib setup ~/haxelib
 
-      - name: Restore cache
-        uses: actions/cache@v4.2.3
+      - name: Restore build cache
+        uses: actions/cache@v4
         with:
-          key: cache-ios
+          key: ios-haxe-cache
           path: |
-            .haxelib/
-            ~/.hxcpp/
-            export/release/ios/${{ env.PROJECT_NAME }}/haxe/
+            ~/haxelib
+            export/release/ios/${{ env.PROJECT_NAME }}/haxe
 
-      - name: Install libraries
+      - name: Install project libraries
         run: |
           haxe -cp commandline -D analyzer-optimize --run Main setup -s
 
-      - name: Build iOS (unsigned)
+      - name: Build iOS (no signing)
         run: |
           haxelib run lime build ios -eval -nosign -final
 
-      - name: Make IPA
+      - name: Create IPA
         run: |
           brew install ldid
           cd export/release/ios/build/Release-iphoneos/${{ env.PROJECT_NAME }}.app
@@ -58,5 +58,13 @@ jobs:
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Codename Engine iOS
-          path: export/release/ios/build/Release-iphoneos/${{ env.PROJECT_NAME }}.ipa
+          name: ${{ env.PROJECT_NAME }}-iOS
+          path: export/release/ios/build/Release-iphoneos/*.ipa
+
+      - name: Save build cache
+        uses: actions/cache@v4
+        with:
+          key: ios-haxe-cache
+          path: |
+            ~/haxelib
+            export/release/ios/${{ env.PROJECT_NAME }}/haxe
