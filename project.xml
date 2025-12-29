@@ -5,7 +5,7 @@
 		title="Friday Night Funkin': Gorefield V2" main="funkin.backend.system.Main"
 		file="gorefield" packageName="com.lasagna.gorefield"
 		package="com.lasagna.gorefield"
-		version="2.1.0" company="LASAGNA" />
+		version="2.1.1" company="LASAGNA" />
 
 	<!--
 		CHANGE THE SAVE PATH & NAME FOR YOUR MOD HERE!
