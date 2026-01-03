@@ -40,6 +40,8 @@ class Character extends FunkinSprite implements IBeatReceiver implements IOffset
 	public var lastHit:Float = Math.NEGATIVE_INFINITY;
 	public var holdTime:Float = 4;
 
+	public var forceLocked:Bool = false;
+
 	public var playerOffsets:Bool = false;
 
 	public var icon:String = null;
@@ -139,7 +141,7 @@ class Character extends FunkinSprite implements IBeatReceiver implements IOffset
 				stunned = false;
 		}
 
-		if (!__lockAnimThisFrame && lastAnimContext != DANCE)
+		if (!forceLocked && !__lockAnimThisFrame && lastAnimContext != DANCE)
 			tryDance();
 
 		__lockAnimThisFrame = false;
@@ -150,6 +152,7 @@ class Character extends FunkinSprite implements IBeatReceiver implements IOffset
 	private var danced:Bool = false;
 
 	public function dance() {
+		if(forceLocked) return;
 		if(debugMode) return;
 
 		var event = EventManager.get(DanceEvent).recycle(danced);
@@ -163,6 +166,7 @@ class Character extends FunkinSprite implements IBeatReceiver implements IOffset
 	}
 
 	public function tryDance() {
+		if (forceLocked) return;
 		var event = new CancellableEvent();
 		script.call("onTryDance", [event]);
 		if (event.cancelled)
@@ -191,7 +195,7 @@ class Character extends FunkinSprite implements IBeatReceiver implements IOffset
 		scripts.call("beatHit", [curBeat]);
 
 		if (skipNegativeBeats && curBeat < 0) return;
-		if (danceOnBeat && (curBeat + beatOffset) % (beatInterval * CoolUtil.maxInt(Math.floor(4 / Conductor.stepsPerBeat), 1)) == 0 && !__lockAnimThisFrame)
+		if (!forceLocked && danceOnBeat && (curBeat + beatOffset) % (beatInterval * CoolUtil.maxInt(Math.floor(4 / Conductor.stepsPerBeat), 1)) == 0 && !__lockAnimThisFrame)
 			tryDance();
 	}
 
