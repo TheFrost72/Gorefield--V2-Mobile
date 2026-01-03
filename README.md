@@ -12,6 +12,10 @@ The lasagna is ready… now on your mobile!
 
 After 2 long years, the story of Jon and BF vs. Gorefield continues, with better quality and content. This mobile port brings the full experience of Gorefield V2. An adventure full of terrors and enigmas awaits you, now playable on the go!
 
+DOWNLOADS:
+[https://gamebanana.com/mods/642891]
+[https://gamejolt.com/games/gorefield-v2-mobile/1039585]
+
 # STUFF IN MOD
 - Multiple creepy versions of Gorefield
 - Shape-shifting gods and boss-like encounters
